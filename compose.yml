@@ -1,0 +1,37 @@
+services:
+  back:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    container_name: ${BACK_CONTAINER_NAME}
+    volumes:
+      - ./back:/app
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    working_dir: /app
+    tty: true
+    depends_on:
+      - db
+    networks:
+      - apps
+  db:
+    image: postgres:14-alpine
+    container_name: ${POSTGRES_CONTAINER_NAME}
+    ports:
+      - ${POSTGRES_PORT}:5432
+    volumes:
+      - ./sql/lib/postgresql/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    networks:
+      - apps
+
+networks:
+  apps:
+    driver: bridge

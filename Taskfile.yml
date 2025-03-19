@@ -1,0 +1,20 @@
+version: "3"
+
+dotenv:
+  - ".env"
+
+tasks:
+  up:
+    cmds:
+      - docker compose up -d
+  down:
+    cmds:
+      - docker compose down
+  
+  db-login:
+    cmds:
+      - docker exec -it {{.POSTGRES_CONTAINER_NAME}} psql -U {{.POSTGRES_USER}} -d {{.POSTGRES_DB}}
+  
+  back-login:
+    cmds:
+      - docker exec -it {{.BACK_CONTAINER_NAME}} /bin/bash
