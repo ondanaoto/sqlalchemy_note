@@ -1,8 +1,11 @@
 services:
   back:
     build:
-      context: ./back
-      dockerfile: Dockerfile
+      args:
+        - USER_UID=$USER_UID
+        - USER_GID=$USER_GID
+      context: .
+      dockerfile: ./docker/back/Dockerfile
     container_name: ${BACK_CONTAINER_NAME}
     volumes:
       - ./back:/app
