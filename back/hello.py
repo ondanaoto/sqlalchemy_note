@@ -1,5 +1,5 @@
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.orm import sessionmaker, declarative_base, Session
+from sqlalchemy import Column, Integer, String, create_engine
+from sqlalchemy.orm import Session, declarative_base, sessionmaker
 
 from config import DATABASE_URL
 
