@@ -6,6 +6,7 @@ from config import DATABASE_URL
 # Baseクラスの作成 (マッピング定義で使用)
 Base = declarative_base()
 
+
 # サンプル用のテーブル定義 (Model)
 class User(Base):
     __tablename__ = "users"
@@ -14,13 +15,16 @@ class User(Base):
     name = Column(String(50), nullable=False)
     email = Column(String(120), unique=True, nullable=False)
 
+
 # Engine と Session のセットアップ
 engine = create_engine(DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+
 def init_db():
     """テーブル作成(まだ存在しなければ)"""
     Base.metadata.create_all(bind=engine)
+
 
 def create_user(session: Session, name: str, email: str):
     """ユーザデータを作成 (CREATE)"""
@@ -30,9 +34,11 @@ def create_user(session: Session, name: str, email: str):
     session.refresh(new_user)
     return new_user
 
+
 def get_user_by_name(session: Session, name: str):
     """ユーザを名前で検索 (READ)"""
     return session.query(User).filter(User.name == name).first()
+
 
 def update_user_email(session: Session, user_id: int, new_email: str):
     """ユーザのメールアドレスを更新 (UPDATE)"""
@@ -43,6 +49,7 @@ def update_user_email(session: Session, user_id: int, new_email: str):
         session.refresh(user)
     return user
 
+
 def delete_user(session: Session, user_id: int):
     """ユーザを削除 (DELETE)"""
     user = session.query(User).filter(User.id == user_id).first()
@@ -50,6 +57,7 @@ def delete_user(session: Session, user_id: int):
         session.delete(user)
         session.commit()
     return user
+
 
 if __name__ == "__main__":
     # DB初期化 (テーブルが無ければ作成)
@@ -66,12 +74,16 @@ if __name__ == "__main__":
         # --- READ ---
         fetched_user = get_user_by_name(db_session, "Taro")
         if fetched_user:
-            print("Fetched user:", fetched_user.id, fetched_user.name, fetched_user.email)
+            print(
+                "Fetched user:", fetched_user.id, fetched_user.name, fetched_user.email
+            )
         else:
             print("User not found.")
 
         # --- UPDATE ---
-        updated_user = update_user_email(db_session, fetched_user.id, "taro_new@example.com")
+        updated_user = update_user_email(
+            db_session, fetched_user.id, "taro_new@example.com"
+        )
         print("Updated user email:", updated_user.email)
 
         # --- DELETE ---

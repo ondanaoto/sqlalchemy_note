@@ -1,6 +1,5 @@
 import os
 
-
 POSTGRES_HOST = os.environ["POSTGRES_HOST"]
 POSTGRES_PORT = os.environ["POSTGRES_PORT"]
 POSTGRES_USER = os.environ["POSTGRES_USER"]
